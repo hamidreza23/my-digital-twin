@@ -7,6 +7,8 @@ A sophisticated AI-powered digital twin chatbot that represents Hamid Dadvar, an
 ### 🧠 **AI-Powered Personality**
 - **Authentic Digital Twin**: Embodies Hamid's professional expertise and personality
 - **Rich Context**: Detailed background in AI engineering, mobile development, and innovative projects
+- **Data Repository**: Uses real LinkedIn data, structured facts, and communication style preferences
+- **Dynamic Context**: Automatically generates personality prompts from multiple data sources
 - **Conversational**: Natural, engaging responses that feel like talking to the real person
 
 ### 🚀 **Real-Time Streaming**
@@ -36,7 +38,13 @@ A sophisticated AI-powered digital twin chatbot that represents Hamid Dadvar, an
 twin/
 ├── backend/           # FastAPI Python backend
 │   ├── server.py      # Main API server with streaming
-│   ├── me.txt         # Digital twin personality data
+│   ├── context.py     # Dynamic personality generation
+│   ├── resources.py   # Data loading utilities
+│   ├── data/          # Data repository
+│   │   ├── facts.json # Structured personal information
+│   │   ├── linkedin.pdf # LinkedIn profile data
+│   │   ├── style.txt  # Communication style
+│   │   └── summary.txt # Professional summary
 │   ├── requirements.txt
 │   └── memory/        # Conversation storage
 └── frontend/          # Next.js React frontend
@@ -69,6 +77,12 @@ Create a `.env` file:
 OPENAI_API_KEY=your_openai_api_key_here
 CORS_ORIGINS=http://localhost:3000,http://192.168.1.100:3000
 ```
+
+**Note**: The digital twin uses a data repository system with:
+- `data/facts.json` - Structured personal information
+- `data/linkedin.pdf` - LinkedIn profile data
+- `data/style.txt` - Communication preferences
+- `data/summary.txt` - Professional background
 
 Start the backend:
 ```bash
@@ -154,7 +168,13 @@ twin/
 ├── README.md
 ├── backend/
 │   ├── server.py              # FastAPI application
-│   ├── me.txt                 # Digital twin personality
+│   ├── context.py             # Dynamic personality generation
+│   ├── resources.py           # Data loading utilities
+│   ├── data/                  # Data repository
+│   │   ├── facts.json         # Structured personal information
+│   │   ├── linkedin.pdf       # LinkedIn profile data
+│   │   ├── style.txt          # Communication style
+│   │   └── summary.txt        # Professional summary
 │   ├── requirements.txt       # Python dependencies
 │   ├── .env                   # Environment variables
 │   └── memory/                # Conversation storage
@@ -169,11 +189,33 @@ twin/
     └── next.config.ts       # Next.js configuration
 ```
 
+## 📊 Data Repository System
+
+The digital twin uses a sophisticated data repository system to ensure accurate and personalized responses:
+
+### **Data Sources:**
+- **`facts.json`** - Structured personal information (name, role, specialties, experience)
+- **`linkedin.pdf`** - Real LinkedIn profile data extracted via PDF processing
+- **`style.txt`** - Communication style preferences and tone
+- **`summary.txt`** - Professional background and achievements
+
+### **Dynamic Context Generation:**
+- **`context.py`** - Generates personalized prompts from all data sources
+- **`resources.py`** - Handles data loading and PDF processing
+- **Real-time Updates** - Context includes current date/time for relevance
+
+### **Benefits:**
+- **Accuracy**: Uses real LinkedIn data instead of generic descriptions
+- **Consistency**: Structured facts ensure consistent responses
+- **Personalization**: Communication style matches your actual preferences
+- **Maintainability**: Easy to update information by modifying data files
+
 ## 🔒 Security & Privacy
 
 - **API Keys**: Store OpenAI API keys securely in environment variables
 - **CORS**: Configured for specific origins only
 - **Memory**: Conversations stored locally, not in external databases
+- **Data Privacy**: All personal data stored locally, not shared externally
 - **HTTPS**: Use HTTPS in production environments
 
 ## 🚀 Deployment
@@ -229,4 +271,3 @@ For issues and questions:
 
 ---
 
-**Built with ❤️ by Hamid Dadvar** | **Powered by OpenAI GPT-4**
