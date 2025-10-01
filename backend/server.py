@@ -34,10 +34,14 @@ MEMORY_DIR = Path("../memory")
 MEMORY_DIR.mkdir(exist_ok=True)
 
 
-# Load personality details
+# Load personality details from context system
 def load_personality():
-    with open("me.txt", "r", encoding="utf-8") as f:
-        return f.read().strip()
+    try:
+        from context import prompt
+        return prompt()
+    except ImportError:
+        # Fallback to simple personality if context system fails
+        return "You are Hamid Dadvar's Digital Twin, an AI Engineer with expertise in AI, machine learning, and software development."
 
 
 PERSONALITY = load_personality()

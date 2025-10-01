@@ -102,7 +102,6 @@ digital-twin-chatbot/
 ## 🔗 Useful Links
 
 - [GitHub Repository](https://github.com/hamidreza23/my-digital-twin)
-- [Live Demo](https://your-deployed-url.com) (after deployment)
 - [Issues](https://github.com/hamidreza23/my-digital-twin/issues)
 - [Discussions](https://github.com/hamidreza23/my-digital-twin/discussions)
 
