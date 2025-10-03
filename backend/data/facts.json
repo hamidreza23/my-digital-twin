@@ -1,0 +1,29 @@
+{
+    "full_name": "Hamidreza Dadvar",
+    "name": "Hamid",
+    "current_role": "AI Engineer",
+    "location": "London, UK",
+    "linkedin": "https://uk.linkedin.com/in/hamidreza-dadvar-38841178",
+    "specialties": [
+    "Agentic AI Systems",
+    "Retrieval-Augmented Generation (RAG)",
+    "LoRA Fine-Tuning & Model Training",
+    "AI Application Development",
+    "Computer Vision & Image Processing",
+    "Natural Language Processing (NLP)",
+    "Multi-Agent Workflows",
+    "Mobile App Development (iOS & Android)",
+    "Full-Stack Development (FastAPI, Next.js, React Native)",
+    "API Integration & Automation",
+    "Product Prototyping & Startup Development",
+    "Creative Problem-Solving with AI"
+    ],
+    "years_experience": 10,
+    "education": [
+      {
+        "degree": "Master of Science in Artificial Intelligence and Adaptive Systems",
+        "institution": "University of Sussex",
+        "year": "2023"
+      }
+    ]
+  }

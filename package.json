@@ -1,0 +1,41 @@
+{
+  "name": "digital-twin-chatbot",
+  "version": "1.0.0",
+  "description": "AI-powered digital twin chatbot with real-time streaming responses",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && python server.py",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "start": "cd frontend && npm start",
+    "install:all": "cd frontend && npm install",
+    "setup": "npm run install:all && echo 'Backend dependencies: pip install -r backend/requirements.txt'"
+  },
+  "keywords": [
+    "ai",
+    "chatbot",
+    "digital-twin",
+    "openai",
+    "fastapi",
+    "nextjs",
+    "streaming",
+    "conversation"
+  ],
+  "author": "Hamid Dadvar",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hamidreza23/my-digital-twin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hamidreza23/my-digital-twin/issues"
+  },
+  "homepage": "https://github.com/hamidreza23/my-digital-twin#readme",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "workspaces": [
+    "frontend"
+  ]
+}

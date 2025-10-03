@@ -13,7 +13,6 @@ interface Message {
 export default function Twin() {
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
     const [sessionId, setSessionId] = useState<string>('');
     const [isStreaming, setIsStreaming] = useState(false);
     const [streamingContent, setStreamingContent] = useState('');
@@ -29,7 +28,7 @@ export default function Twin() {
     }, [messages]);
 
     const sendMessage = async () => {
-        if (!input.trim() || isLoading || isStreaming) return;
+        if (!input.trim() || isStreaming) return;
 
         const userMessage: Message = {
             id: Date.now().toString(),
@@ -48,7 +47,7 @@ export default function Twin() {
         abortControllerRef.current = new AbortController();
 
         try {
-            const response = await fetch('http://localhost:8000/chat/stream', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/stream`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -66,7 +65,6 @@ export default function Twin() {
             if (!reader) throw new Error('No response body');
 
             let fullContent = '';
-            let currentSessionId = sessionId;
 
             while (true) {
                 const { done, value } = await reader.read();
@@ -81,7 +79,6 @@ export default function Twin() {
                             const data = JSON.parse(line.slice(6));
                             
                             if (data.type === 'session_id') {
-                                currentSessionId = data.session_id;
                                 if (!sessionId) {
                                     setSessionId(data.session_id);
                                 }
@@ -102,15 +99,15 @@ export default function Twin() {
                             } else if (data.type === 'error') {
                                 throw new Error(data.error);
                             }
-                        } catch (parseError) {
+                        } catch {
                             // Ignore parse errors for incomplete chunks
                         }
                     }
                 }
             }
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('Error:', error);
-            if (error.name !== 'AbortError') {
+            if (error instanceof Error && error.name !== 'AbortError') {
                 // Add error message
                 const errorMessage: Message = {
                     id: (Date.now() + 1).toString(),
@@ -170,7 +167,7 @@ export default function Twin() {
                     <div>
                         <h2 className="text-xl font-semibold flex items-center gap-2">
                             <Bot className="w-6 h-6" />
-                            Hamid's Digital Twin
+                            Hamid&apos;s Digital Twin
                         </h2>
                         <p className="text-sm text-slate-300 mt-1">AI Engineer & Developer</p>
                     </div>
@@ -202,7 +199,7 @@ export default function Twin() {
                 {messages.length === 0 && (
                     <div className="text-center text-gray-500 mt-8">
                         <Bot className="w-12 h-12 mx-auto mb-3 text-gray-400" />
-                        <p className="text-lg font-medium">Hello! I'm Hamid's Digital Twin.</p>
+                        <p className="text-lg font-medium">Hello! I&apos;m Hamid&apos;s Digital Twin.</p>
                         <p className="text-sm mt-2 max-w-md mx-auto">
                             Ask me about my AI projects, technical expertise, career journey, 
                             or anything related to AI engineering and development!
@@ -272,7 +269,7 @@ export default function Twin() {
                     </div>
                 ))}
 
-                {(isLoading || isStreaming) && (
+                {isStreaming && (
                     <div className="flex gap-3 justify-start">
                         <div className="flex-shrink-0">
                             <div className="w-8 h-8 bg-slate-700 rounded-full flex items-center justify-center">
@@ -322,11 +319,11 @@ export default function Twin() {
                         onKeyDown={handleKeyPress}
                         placeholder="Type your message..."
                         className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600 focus:border-transparent text-gray-800"
-                        disabled={isLoading || isStreaming}
+                        disabled={isStreaming}
                     />
                     <button
                         onClick={sendMessage}
-                        disabled={!input.trim() || isLoading || isStreaming}
+                        disabled={!input.trim() || isStreaming}
                         className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
                         <Send className="w-5 h-5" />
