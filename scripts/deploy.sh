@@ -30,10 +30,15 @@ fi
 
 # Import existing resources to avoid conflicts
 echo "📥 Importing existing AWS resources..."
-terraform import -input=false aws_s3_bucket.frontend twin-dev-frontend-${AWS_ACCOUNT_ID} 2>/dev/null || echo "  ℹ️  Frontend bucket not imported (may not exist or already in state)"
-terraform import -input=false aws_s3_bucket.memory twin-dev-memory-${AWS_ACCOUNT_ID} 2>/dev/null || echo "  ℹ️  Memory bucket not imported (may not exist or already in state)"
-terraform import -input=false aws_iam_role.lambda_role twin-${ENVIRONMENT}-lambda-role 2>/dev/null || echo "  ℹ️  Lambda role not imported (may not exist or already in state)"
-terraform import -input=false aws_iam_openid_connect_provider.github arn:aws:iam::${AWS_ACCOUNT_ID}:oidc-provider/token.actions.githubusercontent.com 2>/dev/null || echo "  ℹ️  OIDC provider not imported (may not exist or already in state)"
+echo "  Importing frontend S3 bucket..."
+terraform import -input=false aws_s3_bucket.frontend twin-${ENVIRONMENT}-frontend-${AWS_ACCOUNT_ID} || echo "  ⚠️  Already in state or doesn't exist"
+echo "  Importing memory S3 bucket..."
+terraform import -input=false aws_s3_bucket.memory twin-${ENVIRONMENT}-memory-${AWS_ACCOUNT_ID} || echo "  ⚠️  Already in state or doesn't exist"
+echo "  Importing Lambda IAM role..."
+terraform import -input=false aws_iam_role.lambda_role twin-${ENVIRONMENT}-lambda-role || echo "  ⚠️  Already in state or doesn't exist"
+echo "  Importing GitHub OIDC provider..."
+terraform import -input=false aws_iam_openid_connect_provider.github arn:aws:iam::${AWS_ACCOUNT_ID}:oidc-provider/token.actions.githubusercontent.com || echo "  ⚠️  Already in state or doesn't exist"
+echo "✅ Import phase complete"
 
 # Use prod.tfvars for production environment
 if [ "$ENVIRONMENT" = "prod" ]; then
