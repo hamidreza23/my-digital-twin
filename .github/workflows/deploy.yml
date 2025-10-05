@@ -58,15 +58,6 @@ jobs:
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
 
-      - name: Import Existing Resources
-        working-directory: ./terraform
-        run: |
-          # Import existing resources to avoid conflicts
-          terraform import -input=false aws_s3_bucket.frontend twin-dev-frontend-146279608294 || true
-          terraform import -input=false aws_s3_bucket.memory twin-dev-memory-146279608294 || true
-          terraform import -input=false aws_iam_role.lambda_role twin-dev-lambda-role || true
-          terraform import -input=false aws_iam_openid_connect_provider.github arn:aws:iam::146279608294:oidc-provider/token.actions.githubusercontent.com || true
-
       - name: Run Deployment Script
         run: |
           # Set environment variables for the script

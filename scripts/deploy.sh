@@ -28,6 +28,13 @@ else
   terraform workspace select "$ENVIRONMENT"
 fi
 
+# Import existing resources to avoid conflicts
+echo "📥 Importing existing AWS resources..."
+terraform import -input=false aws_s3_bucket.frontend twin-dev-frontend-${AWS_ACCOUNT_ID} 2>/dev/null || echo "  ℹ️  Frontend bucket not imported (may not exist or already in state)"
+terraform import -input=false aws_s3_bucket.memory twin-dev-memory-${AWS_ACCOUNT_ID} 2>/dev/null || echo "  ℹ️  Memory bucket not imported (may not exist or already in state)"
+terraform import -input=false aws_iam_role.lambda_role twin-${ENVIRONMENT}-lambda-role 2>/dev/null || echo "  ℹ️  Lambda role not imported (may not exist or already in state)"
+terraform import -input=false aws_iam_openid_connect_provider.github arn:aws:iam::${AWS_ACCOUNT_ID}:oidc-provider/token.actions.githubusercontent.com 2>/dev/null || echo "  ℹ️  OIDC provider not imported (may not exist or already in state)"
+
 # Use prod.tfvars for production environment
 if [ "$ENVIRONMENT" = "prod" ]; then
   TF_APPLY_CMD=(terraform apply -var-file=prod.tfvars -var="project_name=$PROJECT_NAME" -var="environment=$ENVIRONMENT" -auto-approve)
