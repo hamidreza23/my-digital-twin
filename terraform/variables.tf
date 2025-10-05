@@ -52,3 +52,8 @@ variable "root_domain" {
   default     = ""
 }
 
+variable "github_repository" {
+  description = "GitHub repository in format owner/repo"
+  type        = string
+  default     = "hamidreza23/my-digital-twin"
+}

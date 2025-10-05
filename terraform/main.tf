@@ -406,7 +406,7 @@ resource "aws_iam_role" "github_actions" {
 
 # Attach policies to GitHub Actions role
 resource "aws_iam_role_policy_attachment" "github_lambda" {
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaFullAccess"
+  policy_arn = "arn:aws:iam::aws:policy/AWSLambda_FullAccess"
   role       = aws_iam_role.github_actions.name
 }
 
@@ -441,7 +441,7 @@ resource "aws_iam_role_policy_attachment" "github_dynamodb" {
 }
 
 resource "aws_iam_role_policy_attachment" "github_acm" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonCertificateManagerFullAccess"
+  policy_arn = "arn:aws:iam::aws:policy/AWSCertificateManagerFullAccess"
   role       = aws_iam_role.github_actions.name
 }
 
