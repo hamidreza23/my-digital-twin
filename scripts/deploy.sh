@@ -57,22 +57,24 @@ FRONTEND_BUCKET=$(terraform output -raw s3_frontend_bucket)
 CUSTOM_URL=$(terraform output -raw custom_domain_url 2>/dev/null || true)
 
 # 3. Build + deploy frontend
-cd ../frontend
-
 # Create production environment file with API URL
 echo "📝 Setting API URL for production..."
-echo "NEXT_PUBLIC_API_URL=$API_URL" > .env.production
+echo "NEXT_PUBLIC_API_URL=$API_URL" > ../frontend/.env.production
 
 # Install dependencies if not already installed (for local runs)
-if [ ! -d "node_modules" ]; then
-  echo "📦 Installing frontend dependencies..."
+if [ ! -d "../node_modules" ]; then
+  echo "📦 Installing dependencies..."
+  cd ..
   npm install
+  cd terraform
 fi
 
 echo "🏗️  Building frontend..."
-npm run build
-aws s3 sync ./out "s3://$FRONTEND_BUCKET/" --delete
 cd ..
+npm run build --workspace=frontend
+cd frontend
+aws s3 sync ./out "s3://$FRONTEND_BUCKET/" --delete
+cd ../terraform
 
 # 4. Final messages
 echo -e "\n✅ Deployment complete!"
