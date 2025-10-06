@@ -73,10 +73,11 @@ if [ ! -f "../backend/lambda-deployment.zip" ]; then
 fi
 
 # Run terraform destroy with auto-approve
+# Note: openai_api_key is not needed for destroy, so we provide a dummy value
 if [ "$ENVIRONMENT" = "prod" ] && [ -f "prod.tfvars" ]; then
-    terraform destroy -var-file=prod.tfvars -var="project_name=$PROJECT_NAME" -var="environment=$ENVIRONMENT" -auto-approve
+    terraform destroy -var-file=prod.tfvars -var="project_name=$PROJECT_NAME" -var="environment=$ENVIRONMENT" -var="openai_api_key=dummy" -auto-approve
 else
-    terraform destroy -var="project_name=$PROJECT_NAME" -var="environment=$ENVIRONMENT" -auto-approve
+    terraform destroy -var="project_name=$PROJECT_NAME" -var="environment=$ENVIRONMENT" -var="openai_api_key=dummy" -auto-approve
 fi
 
 echo "✅ Infrastructure for ${ENVIRONMENT} has been destroyed!"
