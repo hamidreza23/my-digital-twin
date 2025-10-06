@@ -63,7 +63,13 @@ cd ../frontend
 echo "📝 Setting API URL for production..."
 echo "NEXT_PUBLIC_API_URL=$API_URL" > .env.production
 
-npm install
+# Install dependencies if not already installed (for local runs)
+if [ ! -d "node_modules" ]; then
+  echo "📦 Installing frontend dependencies..."
+  npm install
+fi
+
+echo "🏗️  Building frontend..."
 npm run build
 aws s3 sync ./out "s3://$FRONTEND_BUCKET/" --delete
 cd ..
