@@ -28,3 +28,8 @@ output "custom_domain_url" {
   value       = var.use_custom_domain ? "https://${var.root_domain}" : ""
 }
 
+output "github_actions_role_arn" {
+  description = "ARN of the GitHub Actions IAM role"
+  value       = aws_iam_role.github_actions.arn
+}
+
