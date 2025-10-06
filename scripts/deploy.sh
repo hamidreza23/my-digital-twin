@@ -42,11 +42,17 @@ echo "  Importing GitHub OIDC provider..."
 terraform import -input=false aws_iam_openid_connect_provider.github arn:aws:iam::${AWS_ACCOUNT_ID}:oidc-provider/token.actions.githubusercontent.com || echo "  ⚠️  Already in state or doesn't exist"
 echo "✅ Import phase complete"
 
+# Check for required environment variable
+if [ -z "$OPENAI_API_KEY" ]; then
+  echo "❌ Error: OPENAI_API_KEY environment variable is not set"
+  exit 1
+fi
+
 # Use prod.tfvars for production environment
 if [ "$ENVIRONMENT" = "prod" ]; then
-  TF_APPLY_CMD=(terraform apply -var-file=prod.tfvars -var="project_name=$PROJECT_NAME" -var="environment=$ENVIRONMENT" -auto-approve)
+  TF_APPLY_CMD=(terraform apply -var-file=prod.tfvars -var="project_name=$PROJECT_NAME" -var="environment=$ENVIRONMENT" -var="openai_api_key=$OPENAI_API_KEY" -auto-approve)
 else
-  TF_APPLY_CMD=(terraform apply -var="project_name=$PROJECT_NAME" -var="environment=$ENVIRONMENT" -auto-approve)
+  TF_APPLY_CMD=(terraform apply -var="project_name=$PROJECT_NAME" -var="environment=$ENVIRONMENT" -var="openai_api_key=$OPENAI_API_KEY" -auto-approve)
 fi
 
 echo "🎯 Applying Terraform..."

@@ -28,6 +28,12 @@ variable "lambda_timeout" {
   default     = 60
 }
 
+variable "openai_api_key" {
+  description = "OpenAI API key for the chatbot"
+  type        = string
+  sensitive   = true
+}
+
 variable "api_throttle_burst_limit" {
   description = "API Gateway throttle burst limit"
   type        = number
