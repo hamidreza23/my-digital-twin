@@ -58,11 +58,9 @@ jobs:
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
       
-      - name: Install frontend dependencies with optional deps
+      - name: Install frontend dependencies
         working-directory: ./frontend
-        run: |
-          npm ci --include=optional
-          npm rebuild lightningcss --build-from-source || true
+        run: npm ci
 
       - name: Run Deployment Script
         run: |
